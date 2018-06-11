@@ -22,23 +22,29 @@ public class RedisSetTest {
 //		jedis.auth(DATASOURCE_PASS);
 		jedis.select(DATASOURCE_SELECT);
 	}
-
+	
+	/**
+	 * sadd 将一个或多个 member 元素加入到集合 key 当中，已经存在于集合的 member 元素将被忽略。
+	 */
 	public void testSAdd() {
-		// sadd 将一个或多个 member 元素加入到集合 key 当中，已经存在于集合的 member 元素将被忽略。
 		Assert.assertTrue(jedis.sadd("set", "a") == 1);
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 2);
 		Assert.assertTrue(jedis.del("set") == 1);
 	}
-
+	
+	/**
+	 * scard 返回集合 key 的基数(集合中元素的数量)。
+	 */
 	public void testSCard() {
-		// scard 返回集合 key 的基数(集合中元素的数量)。
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 3);
 		Assert.assertTrue(jedis.scard("set".getBytes()) == 3);
 		Assert.assertTrue(jedis.del("set") == 1);
 	}
-
+	
+	/**
+	 * sdiff 返回一个集合的全部成员，该集合是所有给定集合之间的差集。
+	 */
 	public void testSDiff() {
-		// sdiff 返回一个集合的全部成员，该集合是所有给定集合之间的差集。
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 3);
 		Assert.assertTrue(jedis.sadd("SET", "A", "B", "C", "a", "b", "c") == 6);
 		Set<String> a = jedis.sdiff("set", "SET");// 是找出set中，SET没有的元素，多级的话，一个个比
@@ -47,17 +53,21 @@ public class RedisSetTest {
 		Assert.assertTrue(jedis.del("set", "SET") == 2);
 	}
 
+	/**
+	 * sdiffstore 这个命令的作用和 SDIFF 类似，但它将结果保存到 destination 集合，而不是简单地返回结果集。
+	 */
 	public void testSDiffStore() {
-		// sdiffstore 这个命令的作用和 SDIFF 类似，但它将结果保存到 destination 集合，而不是简单地返回结果集。
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 3);
 		Assert.assertTrue(jedis.sadd("SET", "A", "B", "C", "a", "b", "c") == 6);
 		Assert.assertTrue(jedis.sdiffstore("store", "SET", "set") == 3);
 		Assert.assertTrue(jedis.sdiffstore("store", "set", "SET") == 0);
 		Assert.assertTrue(jedis.del("set", "SET") == 2);
 	}
-
+	
+	/**
+	 * sinter 返回一个集合的全部成员，该集合是所有给定集合的交集。
+	 */
 	public void testSInter() {
-		// sinter 返回一个集合的全部成员，该集合是所有给定集合的交集。
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 3);
 		Assert.assertTrue(jedis.sadd("SET", "A", "B", "C", "a", "b", "c") == 6);
 		Set<String> set = jedis.sinter("set", "SET");
@@ -65,33 +75,41 @@ public class RedisSetTest {
 		Assert.assertTrue(set.size() == 3);
 		Assert.assertTrue(jedis.del("set", "SET") == 2);
 	}
-
+	
+	/**
+	 * sinterstore 这个命令类似于 SINTER 命令，但它将结果保存到 destination 集合，而不是简单地返回结果集。
+	 */
 	public void testSInterStore() {
-		// sinterstore 这个命令类似于 SINTER 命令，但它将结果保存到 destination 集合，而不是简单地返回结果集。
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 3);
 		Assert.assertTrue(jedis.sadd("SET", "A", "B", "C", "a", "b", "c") == 6);
 		Assert.assertTrue(jedis.sinterstore("store", "set", "SET") == 3);
 		Assert.assertTrue(jedis.del("set", "SET", "store") == 3);
 	}
 
+	/**
+	 * sismember 判断 member 元素是否集合 key 的成员。
+	 */
 	public void testSIsMember() {
-		// sismember 判断 member 元素是否集合 key 的成员。
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 3);
 		Assert.assertTrue(jedis.sismember("set", "b"));
 		Assert.assertTrue(jedis.del("set") == 1);
 	}
-
+	
+	/**
+	 * smembers 返回集合 key 中的所有成员。 不存在的 key 被视为空集合。
+	 */
 	public void testSMembers() {
-		// smembers 返回集合 key 中的所有成员。 不存在的 key 被视为空集合。
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 3);
 		Set<String> set = jedis.smembers("set");
 		System.out.println(set.toString());
 		Assert.assertTrue(set.size() == 3);
 		Assert.assertTrue(jedis.del("set") == 1);
 	}
-
+	
+	/**
+	 * 将 member 元素从 source 集合移动到 destination 集合。 (原子操作)
+	 */
 	public void testSMove() {
-		// 将 member 元素从 source 集合移动到 destination 集合。 (原子操作)
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 3);
 		Assert.assertTrue(jedis.sadd("SET", "A", "B", "C", "a", "b", "c") == 6);
 		Assert.assertTrue(jedis.smove("set", "SET", "a") == 1);
@@ -103,9 +121,11 @@ public class RedisSetTest {
 		Assert.assertTrue(b.size() == 6);// 因为原本就存在a ，所以还是6个
 		Assert.assertTrue(jedis.del("set", "SET") == 2);
 	}
-
+	
+	/**
+	 * spop 移除并返回集合中的一个随机元素。
+	 */
 	public void testSPop() {
-		// spop 移除并返回集合中的一个随机元素。
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 3);
 		System.out.println(jedis.spop("set"));
 		Set<String> a = jedis.smembers("set");
@@ -113,17 +133,17 @@ public class RedisSetTest {
 		Assert.assertTrue(jedis.del("set") == 1);
 
 	}
-
+	
+	/**
+	 * 如果命令执行时，只提供了 key 参数，那么返回集合中的一个随机元素。
+	 * 
+	 * 从 Redis 2.6 版本开始， SRANDMEMBER 命令接受可选的 count 参数：
+	 * 
+	 * 如果 count 为正数，且小于集合基数，那么命令返回一个包含 count 个元素的数组，数组中的元素各不相同。如果 count
+	 * 大于等于集合基数，那么返回整个集合。 如果 count 为负数，那么命令返回一个数组，数组中的元素可能会重复出现多次，而数组的长度为 count
+	 * 的绝对值。
+	 */
 	public void testSRandMember() {
-		/**
-		 * 如果命令执行时，只提供了 key 参数，那么返回集合中的一个随机元素。
-		 * 
-		 * 从 Redis 2.6 版本开始， SRANDMEMBER 命令接受可选的 count 参数：
-		 * 
-		 * 如果 count 为正数，且小于集合基数，那么命令返回一个包含 count 个元素的数组，数组中的元素各不相同。如果 count
-		 * 大于等于集合基数，那么返回整个集合。 如果 count 为负数，那么命令返回一个数组，数组中的元素可能会重复出现多次，而数组的长度为 count
-		 * 的绝对值。
-		 */
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 3);
 		System.out.println(jedis.srandmember("set"));// 不同于spop，srandmember不移除
 		Set<String> a = jedis.smembers("set");
@@ -140,16 +160,20 @@ public class RedisSetTest {
 		System.out.println("listd:" + listd.toString());
 		Assert.assertTrue(jedis.del("set") == 1);
 	}
-
+	
+	/**
+	 * srem 移除集合 key 中的一个或多个 member 元素，不存在的 member 元素会被忽略。
+	 */
 	public void testSRem() {
-		// srem 移除集合 key 中的一个或多个 member 元素，不存在的 member 元素会被忽略。
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 3);
 		Assert.assertTrue(jedis.srem("set", "a", "d") == 1);
 		Assert.assertTrue(jedis.del("set") == 1);
 	}
-
+	
+	/**
+	 * sunion 返回一个集合的全部成员，该集合是所有给定集合的并集。
+	 */
 	public void testSunion() {
-		// sunion 返回一个集合的全部成员，该集合是所有给定集合的并集。
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 3);
 		Assert.assertTrue(jedis.sadd("SET", "A", "B", "C", "a", "b", "c") == 6);
 		Set<String> set = jedis.sunion("set", "SET");
@@ -157,9 +181,11 @@ public class RedisSetTest {
 		Assert.assertTrue(set.size() == 6);
 		Assert.assertTrue(jedis.del("set", "SET") == 2);
 	}
-
+	
+	/**
+	 * 返回一个集合的全部成员，该集合是所有给定集合的并集。
+	 */
 	public void testSunionStore() {
-		// sunion 返回一个集合的全部成员，该集合是所有给定集合的并集。
 		Assert.assertTrue(jedis.sadd("set", "a", "b", "c") == 3);
 		Assert.assertTrue(jedis.sadd("SET", "A", "B", "C", "a", "b", "c") == 6);
 		Assert.assertTrue(jedis.sunionstore("store", "set", "SET") == 6);

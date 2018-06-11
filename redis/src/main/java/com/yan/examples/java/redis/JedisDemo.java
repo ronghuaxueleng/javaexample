@@ -3,6 +3,8 @@ package com.yan.examples.java.redis;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Assert;
+
 import redis.clients.jedis.BinaryClient;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -11,6 +13,7 @@ import redis.clients.jedis.ZParams;
 
 /**
  * redis五种数据类型常见操作
+ * 
  * @author caoqiang
  * @date: 2018年6月11日 下午12:06:58
  */
@@ -300,14 +303,22 @@ public class JedisDemo {
 
 	}
 
+	public static void setTest(Jedis jedis) {
+		System.out.println("添加一个元素 asdd： " + jedis.sadd("set", "a"));
+		System.out.println("添加多个元素 sadd：" + jedis.sadd("set", "a", "b", "c"));
+		
+		System.out.println("返回集合key中元素的个数：" + jedis.scard("set".getBytes()));
+	}
+
 	public static void main(String[] args) {
 		Jedis jedis = JEDIS_POOL.getResource();
-		stringCmdTest(jedis);
-		hashMapCmdTest(jedis);
-		listCmdTest(jedis);
-		setCmdTest(jedis);
-		sortedSetTest(jedis);
+		// stringCmdTest(jedis);
+		// hashMapCmdTest(jedis);
+		// listCmdTest(jedis);
+		// setCmdTest(jedis);
+		// sortedSetTest(jedis);
+		setTest(jedis);
 
-		System.out.println("命令参考地址=>http://redisdoc.com/");
+		// System.out.println("命令参考地址=>http://redisdoc.com/");
 	}
 }
