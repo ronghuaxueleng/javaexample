@@ -34,5 +34,6 @@
 		<module>netty</module>
 		<module>redis</module>
     <module>simhash</module>
+    <module>utils</module>
   </modules>
 </project>
