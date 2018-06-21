@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="INFO" monitorInterval="30">
+	<Properties>
+		<!-- 配置日志文件输出目录 ${sys:user.home} -->
+		<Property name="LOG_HOME">logs
+		</Property>
+		<property name="PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t-%L] %-5level
+			%logger{36} - %msg%n</property>
+	</Properties>
+	<!-- uar -->
+	<Appenders>
+		<RollingFile name="uar" fileName="${LOG_HOME}/uar.log"
+			filePattern="${LOG_HOME}/elastic/$${date:yyyy-MM}/uar-%d{yyyy-MM-dd}-%i.log">
+			<ThresholdFilter level="info" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<PatternLayout pattern="${PATTERN}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+				<SizeBasedTriggeringPolicy size="100 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="7">
+				<Delete basePath="${LOG_HOME}/elastic" maxDepth="2">
+					<IfFileName glob="elastic.log" />
+					<IfLastModified age="7d" />
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+
+		<Console name="Console" target="SYSTEM_OUT">
+			<!-- 控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+			<ThresholdFilter level="info" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<!-- 这个都知道是输出日志的格式 -->
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n" />
+		</Console>
+	</Appenders>
+	<Loggers>
+		<root level="all">
+			<AppenderRef ref="Console" />
+		</root>
+	</Loggers>
+
+</Configuration>
