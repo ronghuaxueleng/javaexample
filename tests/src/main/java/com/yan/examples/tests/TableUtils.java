@@ -20,8 +20,6 @@ public class TableUtils {
 	private final static String DOC_PARAGRAPH_TYPEID = "DOC.PARAGRAPH";
 	private final static String DOC_TABLE_TYPEID = "DOC.TABLE";
 	
-	private final static String SPECIAL_CHARACTER_REGEX = "[\\p{P}+~$`^=|<>～｀＄＾＋＝｜＜＞￥×■]";
-	
 	private String title = "";
 	private boolean hasTable = false;
 
@@ -160,7 +158,6 @@ public class TableUtils {
 
 				String txt = StringUtils.join(txtSet.toArray(), "");
 				if (txt != null && !txt.isEmpty()) {
-					txt = StringUtils.removePattern(txt, SPECIAL_CHARACTER_REGEX);
 					JSONObject txtData = setTdText(txt, DOC_PARAGRAPH_TYPEID);
 					txtData.put("colspan", colspan);
 					txtData.put("rowspan", rowspan);
@@ -169,7 +166,7 @@ public class TableUtils {
 
 			} else {
 				final String txt = td.text();
-				JSONObject txtData = setTdText(StringUtils.removePattern(txt, SPECIAL_CHARACTER_REGEX), DOC_PARAGRAPH_TYPEID);
+				JSONObject txtData = setTdText(txt, DOC_PARAGRAPH_TYPEID);
 				txtData.put("colspan", colspan);
 				txtData.put("rowspan", rowspan);
 				datas.add(txtData);
