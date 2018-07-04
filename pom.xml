@@ -70,5 +70,6 @@
     <module>excel</module>
     <module>tests</module>
     <module>scala</module>
+    <module>config</module>
   </modules>
 </project>
