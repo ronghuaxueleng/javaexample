@@ -19,5 +19,6 @@
 	<packaging>pom</packaging>
   <modules>
     <module>springboot-parent</module>
+    <module>springboot-dubbo-parent</module>
   </modules>
 </project>
