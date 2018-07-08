@@ -69,7 +69,7 @@
 		<module>mysql</module>
     <module>excel</module>
     <module>tests</module>
-    <module>scala</module>
     <module>config</module>
+    <module>springboot</module>
   </modules>
 </project>
