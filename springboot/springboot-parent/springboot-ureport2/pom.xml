@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.yan.examples.springboot</groupId>
+		<artifactId>springboot-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>springboot-ureport2</artifactId>
+	<name>springboot-ureport2</name>
+	<description>集成 ureport2 实现自定义的复杂中国式报表引擎</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<ureport2.version>2.2</ureport2.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.bstek.ureport</groupId>
+			<artifactId>ureport2-console</artifactId>
+			<version>${ureport2.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>springboot-ureport2</finalName>
+	</build>
+</project>
