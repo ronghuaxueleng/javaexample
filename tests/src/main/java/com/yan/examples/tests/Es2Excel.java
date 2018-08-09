@@ -2,13 +2,10 @@ package com.yan.examples.tests;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -24,13 +21,14 @@ import com.yan.utils.html.HtmlUtils;
 /**
  * 导入招标ES表数据处理后导回ES表
  */
-public class Test {
+public class Es2Excel {
 	private static final int defaultBatchSize = 100;
 
 	public static boolean isEmpty(String str) {
 		return str == null || str.isEmpty();
 	}
 
+	@SuppressWarnings("resource")
 	private void importDataOnlineToTest(String startTime, String endTime) throws IOException {
 		Client client = ESClient.getTestClient();
 		SearchRequestBuilder query = client.prepareSearch("item_zhaobiao6").setTypes("item_info");
@@ -52,7 +50,7 @@ public class Test {
 		while (total > 0) {
 			for (SearchHit hit : scrollResp.getHits().getHits()) {
 				try {
-					Map<String, Object> item = hit.getSource();
+					Map<String, Object> item = hit.getSourceAsMap();
 					String content = String.valueOf(item.get("content"));
 					String contentTrim = HtmlUtils.getTextFromTHML(content);
 					// System.out.println(contentTest);
@@ -94,7 +92,7 @@ public class Test {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Test name = new Test();
+		Es2Excel name = new Es2Excel();
 		// long startTime = 1527350400000L;
 		// long endTime = 1527436800000L;
 		// long startTime = 1524672000000L;

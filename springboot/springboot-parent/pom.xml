@@ -122,6 +122,7 @@
     <module>springboot-admin</module>
     <module>springboot-actuator</module>
     <module>springboot-properties</module>
+    <module>springboot-druid</module>
   </modules>
 
 </project>

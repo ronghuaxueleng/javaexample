@@ -1,4 +1,4 @@
-package com.yan.examples.elasticsearch.client;
+package com.yan.examples.elasticsearch.client.jest;
 
 import java.io.IOException;
 import java.util.List;
@@ -78,7 +78,7 @@ public class JestService {
 		// settingsBuilder.put("number_of_replicas",1);
 		settingsBuilder.put("cluster.name", clusterName).build();// 集群名
 
-		CreateIndex createIndex = new CreateIndex.Builder(indexName).settings(settingsBuilder.build().getAsMap())
+		CreateIndex createIndex = new CreateIndex.Builder(indexName).settings(settingsBuilder.build())
 				.build();
 
 		JestResult jr = jestClient.execute(createIndex);

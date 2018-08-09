@@ -1,4 +1,4 @@
-package com.yan.examples.elasticsearch.client;
+package com.yan.examples.elasticsearch.client.jest;
 
 import io.searchbox.annotations.JestId;
 
